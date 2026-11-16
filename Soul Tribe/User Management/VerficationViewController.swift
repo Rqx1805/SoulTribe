@@ -1,0 +1,215 @@
+//
+//  VerficationViewController.swift
+//  Soul Tribe
+//
+//  Created by Ashish Soni on 04/06/21.
+//
+
+import UIKit
+import SVPinView
+class VerficationViewController: UIViewController {
+
+    var comeFromSetting = String()
+    var comeFromSettingEmail_Phone = String()
+    
+    @IBOutlet weak var otpView: SVPinView!
+   // var GetotpString = ""
+  //  var GetComeOtp = String()
+   
+    var datatype : String = ""
+    var userId = ""
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        otpView.shouldSecureText = false
+      //  GetComeOtp = "00000"
+      
+//        otpView.otpFieldsCount = 4
+//                otpView.otpFieldDefaultBorderColor = UIColor.lightGray
+//
+//
+//        otpView.otpFieldBorderWidth = 0.6
+//                otpView.delegate = self
+//                otpView.shouldAllowIntermediateEditing = false
+//
+//                // Create the UI
+//                otpView.initalizeUI()
+        // Do any additional setup after loading the view.
+    }
+    
+    
+//    //MARK:- OTP TextView Delegate  ---- Start
+//    func shouldBecomeFirstResponderForOTP(otpFieldIndex index: Int) -> Bool {
+//        return true
+//    }
+//
+//    func hasEnteredAllOTP(hasEntered: Bool) {
+//        print("Has entered all OTP? \(hasEntered)")
+//    }
+//
+//    func enteredOTP(otpString: String) {
+//        GetotpString = otpString
+//        print("OTPString: \(otpString)")
+//    }
+    
+    @IBAction func backBtnAction(_ sender: Any) {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    
+    @IBAction func submitBtnAction(_ sender: Any) {
+      
+        if otpView.getPin() != "" {
+            
+                self.view.endEditing(true)
+                basicFunctions.presentLoader()
+          
+                let parameterDictionary = NSMutableDictionary()
+
+                parameterDictionary.setValue(userId, forKey: "user_id")
+            parameterDictionary.setValue(otpView.getPin(), forKey: "otp")
+            if self.comeFromSetting == "1" {
+                if self.comeFromSettingEmail_Phone.contains("@") {
+                    parameterDictionary.setValue(datatype, forKey: "email")
+                }else{
+                    parameterDictionary.setValue(datatype, forKey: "mobile")
+                }
+            }else{
+                parameterDictionary.setValue(datatype, forKey: "type")
+            }
+                parameterDictionary.setValue(Config().api_key, forKey: "api_key")
+            
+                print(parameterDictionary)
+
+            var methodName = ""
+            if self.comeFromSetting == "1" {
+                 methodName = "email_verify"
+            }else{
+                methodName = "otp_verification"
+            }
+                            
+                DataManager.getAPIResponse(parameterDictionary , methodName: methodName, methodType: "POST"){(responseData,error)-> Void in
+                        let status  = DataManager.getVal(responseData?["status"]) as? String ?? ""
+                        let message  = DataManager.getVal(responseData?["message"]) as? String ?? ""
+                      
+                        if status == "1" {
+                           
+                            self.view.makeToast(message)
+                                    
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0){
+
+                                if self.datatype == "1"{
+                                    let vc = self.storyboard?.instantiateViewController(identifier: "LocationAccessVC") as! LocationAccessVC
+                                    self.navigationController?.pushViewController(vc, animated: true)
+                                }else if self.comeFromSetting == "1" {
+                                    self.navigationController?.popViewController(animated: true)
+                                }else{
+                                    let vc = self.storyboard?.instantiateViewController(identifier: "ResetPasswordViewController") as! ResetPasswordViewController
+                                    vc.userId = self.userId
+                                    self.navigationController?.pushViewController(vc, animated: true)
+                                }
+                        
+        //                        let vc = self.storyboard?.instantiateViewController(identifier: "VerificationViewController") as! VerificationViewController
+        //                        vc.viewComesFrom = "SignUp"
+        //                        vc.email = userEmail
+        //                        vc.phone = userPhone
+        //                        self.navigationController?.pushViewController(vc, animated: true)
+                            }
+                        }else{
+                            
+                            if message == "Invalid OTP" {
+                                self.view.makeToast("Invalid Code")
+                            }else{
+                                self.view.makeToast(message)
+                            }
+                        }
+                        basicFunctions.stopLoading()
+                    }
+             
+        }else{
+            self.view.makeToast("Please enter OTP.")
+        }
+        
+       
+    }
+    @IBAction func resendBtnAction(_ sender: Any) {
+            
+        
+              self.view.endEditing(true)
+              basicFunctions.presentLoader()
+        
+              let parameterDictionary = NSMutableDictionary()
+
+              parameterDictionary.setValue(userId, forKey: "user_id")
+        parameterDictionary.setValue(otpView.getPin(), forKey: "otp")
+        if self.comeFromSetting == "1" {
+            if self.comeFromSettingEmail_Phone.contains("@") {
+                parameterDictionary.setValue(datatype, forKey: "email")
+            }else{
+                parameterDictionary.setValue(datatype, forKey: "mobile")
+            }
+        }else{
+            parameterDictionary.setValue(datatype, forKey: "type")
+        }
+              parameterDictionary.setValue(Config().api_key, forKey: "api_key")
+          
+              print(parameterDictionary)
+        
+        var methodName = ""
+        if self.comeFromSetting == "1" {
+             methodName = "email_verify"
+        }else{
+            methodName = "resend_otp"
+        }
+                     
+              DataManager.getAPIResponse(parameterDictionary , methodName: methodName, methodType: "POST"){(responseData,error)-> Void in
+                      let status  = DataManager.getVal(responseData?["status"]) as? String ?? ""
+                      let message  = DataManager.getVal(responseData?["message"]) as? String ?? ""
+                    
+                      if status == "1" {
+                         
+                          self.view.makeToast(message)
+                                  
+//                          DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
+//
+//                              if self.datatype == "1"{
+//                                  let vc = self.storyboard?.instantiateViewController(identifier: "LocationAccessVC") as! LocationAccessVC
+//                                  self.navigationController?.pushViewController(vc, animated: true)
+//                              }else{
+//                                  let vc = self.storyboard?.instantiateViewController(identifier: "ResetPasswordViewController") as! ResetPasswordViewController
+//                                  self.navigationController?.pushViewController(vc, animated: true)
+//                              }
+//
+//
+//
+//      //                        let vc = self.storyboard?.instantiateViewController(identifier: "VerificationViewController") as! VerificationViewController
+//      //                        vc.viewComesFrom = "SignUp"
+//      //                        vc.email = userEmail
+//      //                        vc.phone = userPhone
+//      //                        self.navigationController?.pushViewController(vc, animated: true)
+//                          }
+                      }else{
+                          self.view.makeToast(message)
+                      }
+                         
+                      basicFunctions.stopLoading()
+                   
+                  }
+        
+//
+//        let vc = self.storyboard?.instantiateViewController(identifier: "ResetPasswordViewController") as! ResetPasswordViewController
+//        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
+}

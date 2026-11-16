@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1028601810997-3mu9fp47ojcogh5gi012rkt2m857r2sl.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1028601810997-3mu9fp47ojcogh5gi012rkt2m857r2sl</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1028601810997-hii1dd5eof4r60js21iqfkhfkjanu049.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC3hP5ZaS45H3g_IjhF_vT5UjHZ4a9SXgY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1028601810997</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>app.soultribe.com</string>
+	<key>PROJECT_ID</key>
+	<string>soul-tribe-b60c6</string>
+	<key>STORAGE_BUCKET</key>
+	<string>soul-tribe-b60c6.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1028601810997:ios:66b60b26423f2dcb49a17c</string>
+</dict>
+</plist>

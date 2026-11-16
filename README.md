@@ -1,2 +1,1 @@
-# SoulTribe
-It's Dating application
+# Soul_Tribe_IOS

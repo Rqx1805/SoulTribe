@@ -1,0 +1,555 @@
+//
+//  SetProfilestep2VC.swift
+//  DemoNew
+//
+//  Created by mac-9 on 02/07/21.
+//
+
+import UIKit
+class SetProfilestep2cell: UICollectionViewCell{
+    @IBOutlet weak var intrestview: UIView!
+    @IBOutlet weak var imginterest: UIImageView!
+    @IBOutlet weak var lblname: UILabel!
+
+}
+class SetProfilestep2VC: UIViewController,UITextFieldDelegate {
+    
+    @IBAction func btn_backBottomAction(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    @IBOutlet weak var constraint_height_interestColView: NSLayoutConstraint!
+    @IBOutlet weak var btn_miniTribes: UIButton!
+    @IBOutlet weak var btn_soulLove: UIButton!
+    @IBOutlet weak var btn_tribe: UIButton!
+    
+    @IBOutlet weak var soulview: UIView!
+    @IBOutlet weak var tribeview: UIView!
+    @IBOutlet weak var minitribeview: UIView!
+    @IBOutlet weak var btnback: UIButton!
+    @IBOutlet weak var btnnext: UIButton!
+    @IBOutlet weak var religionview: UIView!
+    @IBOutlet weak var firstview: UIView!
+    @IBOutlet weak var secondview: UIView!
+    @IBOutlet weak var thirdview: UIView!
+    @IBOutlet weak var forthview: UIView!
+    @IBOutlet weak var headerview: UIView!
+    @IBOutlet weak var btnimg: UIButton!
+    @IBOutlet weak var btnimg2: UIButton!
+    @IBOutlet weak var btnimg3: UIButton!
+    @IBOutlet weak var interestcollection: UICollectionView!
+    
+    
+    @IBOutlet weak var txt_q2: UITextView!
+    @IBOutlet weak var txt_q1: UITextView!
+    @IBOutlet weak var txt_q3: UITextView!
+    @IBOutlet weak var txt_q4: UITextView!
+    @IBOutlet weak var txt_religion: UITextField!
+    @IBOutlet weak var tableview_relegion: UITableView!
+    @IBOutlet weak var crossbtn:UIButton!
+    
+    var selectedIndex = Int()
+//    var interestImage = ["Fitness","Music","Shopping","Aliens","Art","Sport","Fitness","Music","Shopping","Aliens"]
+//    var interestTxt = ["Fitness","Music","Shopping","Aliens","Art","Sport","Fitness","Music","Shopping","Aliens"]
+    
+    var interestImage = ["Aliens","Art","Cooking","Dancing","Fitness","Gaming","Hiking","Law of Attraction","Meditation","Music","Outdoors","Plant Medicine","Quantum Physics","Reading","Shopping","Social Events","Spirituality","Sports","Travel","Yoga"]
+    
+    var interestTxt = ["Aliens","Art","Cooking","Dancing","Fitness","Gaming","Hiking","Law of Attraction","Meditation","Music","Outdoors","Plant Medicine","Quantum Physics","Reading","Shopping","Social Events","Spirituality","Sports","Travel","Yoga"]
+    
+    
+    var arr_religions = [ "Spiritual",
+                          "Catholic",
+                          "Christian",
+                          "Hindu",
+                          "Buddhist",
+                          "Muslim",
+                          "Atheist",
+                          "Jewish",
+                          "Open",
+                          "Agnostic",
+                          "Other"]
+    
+    var arr_selectedVibes : NSMutableArray = []
+    var arr_selectedInterests : NSMutableArray = []
+    var selectedReligion = ""
+    
+    var comesFrom = ""
+    var userData = [String:Any]()
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        txt_religion.text = "Select"
+        txt_religion.delegate = self
+        
+        txt_religion.setLeftPaddingPoints(10)
+        religionview.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(displayList))
+        self.religionview.addGestureRecognizer(tap)
+        
+        tableview_relegion.dataSource = self
+        tableview_relegion.delegate = self
+        tableview_relegion.reloadData()
+        
+        headerview.layer.shadowColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        headerview.layer.shadowOpacity = 0.5
+        headerview.layer.shadowOffset = .zero
+        headerview.layer.shadowRadius = 5
+        
+        
+        soulview.layer.cornerRadius = 5
+        soulview.layer.borderWidth = 1
+        soulview.layer.borderColor = #colorLiteral(red: 0.8941176471, green: 0.9019607843, blue: 0.9176470588, alpha: 1)
+        
+        tribeview.layer.cornerRadius = 5
+        tribeview.layer.borderWidth = 1
+        tribeview.layer.borderColor = #colorLiteral(red: 0.8941176471, green: 0.9019607843, blue: 0.9176470588, alpha: 1)
+        
+        minitribeview.layer.cornerRadius = 5
+        minitribeview.layer.borderWidth = 1
+        minitribeview.layer.borderColor = #colorLiteral(red: 0.8941176471, green: 0.9019607843, blue: 0.9176470588, alpha: 1)
+        
+        btnback.layer.cornerRadius = 5
+        btnback.layer.borderWidth = 1
+        btnback.layer.borderColor = #colorLiteral(red: 0.8941176471, green: 0.9019607843, blue: 0.9176470588, alpha: 1)
+        
+        btnnext.layer.cornerRadius = 5
+        btnnext.layer.borderWidth = 1
+        btnnext.layer.borderColor = #colorLiteral(red: 0.8941176471, green: 0.9019607843, blue: 0.9176470588, alpha: 1)
+        
+        religionview.layer.cornerRadius = 5
+        religionview.layer.borderWidth = 1
+        religionview.layer.borderColor = #colorLiteral(red: 0.8941176471, green: 0.9019607843, blue: 0.9176470588, alpha: 1)
+        
+        firstview.layer.cornerRadius = 5
+        firstview.layer.borderWidth = 1
+        firstview.layer.borderColor = #colorLiteral(red: 0.8941176471, green: 0.9019607843, blue: 0.9176470588, alpha: 1)
+        
+        secondview.layer.cornerRadius = 5
+        secondview.layer.borderWidth = 1
+        secondview.layer.borderColor = #colorLiteral(red: 0.8941176471, green: 0.9019607843, blue: 0.9176470588, alpha: 1)
+        
+        thirdview.layer.cornerRadius = 5
+        thirdview.layer.borderWidth = 1
+        thirdview.layer.borderColor = #colorLiteral(red: 0.8941176471, green: 0.9019607843, blue: 0.9176470588, alpha: 1)
+        
+        forthview.layer.cornerRadius = 5
+        forthview.layer.borderWidth = 1
+        forthview.layer.borderColor = #colorLiteral(red: 0.8941176471, green: 0.9019607843, blue: 0.9176470588, alpha: 1)
+        
+        txt_q4.delegate = self
+        txt_q3.delegate = self
+        txt_q2.delegate = self
+        txt_q1.delegate = self
+        
+        txt_q4.text = "Write your answer here (Optional)"
+        txt_q3.text = "Write your answer here (Optional)"
+        txt_q2.text = "Write your answer here (Optional)"
+        txt_q1.text = "Write your answer here (Optional)"
+        
+        txt_q4.textColor = UIColor.lightGray
+        txt_q3.textColor = UIColor.lightGray
+        txt_q2.textColor = UIColor.lightGray
+        txt_q1.textColor = UIColor.lightGray
+      
+        constraint_height_interestColView.constant = CGFloat(30*interestImage.count) - 40
+        
+        if comesFrom == "Edit"{
+            setupData()
+        }
+        // Do any additional setup after loading the view.
+    }
+    
+    @IBAction func cleartxt(_ sender:UIButton) {
+        txt_religion.text = ""
+        tableview_relegion.isHidden = true
+        
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        txt_religion.text = ""
+        tableview_relegion.isHidden = true
+        return true
+    }
+    func setupData(){
+        
+        let tempVibe = DataManager.getVal(userData["vibe"]) as? String ?? ""
+        let arrTemp = tempVibe.components(separatedBy: ", ")
+        let arrTempInterest = (DataManager.getVal(userData["hobbies"]) as? String ?? "").components(separatedBy: ", ")
+        
+        for str in arrTempInterest {
+            for i in 0..<interestImage.count{
+                if str == interestImage[i]{
+                    arr_selectedInterests.add(interestTxt[i])
+                    break
+                }
+            }
+        }
+        
+        interestcollection.reloadData()
+        
+        for str in arrTemp{
+            if str == "Soul Love" {
+                soulview.layer.borderColor = #colorLiteral(red: 0.0862745098, green: 0.7803921569, blue: 0.6039215686, alpha: 1)
+                soulview.layer.borderWidth = 1
+                btnimg.setImage(UIImage(named: "Icon awesome-check-circle"), for: .normal)
+                arr_selectedVibes.add("Soul Love")
+                btn_soulLove.isSelected = true
+                
+            }else if str == "Tribe"{
+                tribeview.layer.borderColor = #colorLiteral(red: 0.0862745098, green: 0.7803921569, blue: 0.6039215686, alpha: 1)
+                tribeview.layer.borderWidth = 1
+                btnimg2.setImage(UIImage(named: "Icon awesome-check-circle"), for: .normal)
+                arr_selectedVibes.add("Tribe")
+                btn_tribe.isSelected = true
+            }else if str == "Mini Tribes"{
+                minitribeview.layer.borderColor = #colorLiteral(red: 0.0862745098, green: 0.7803921569, blue: 0.6039215686, alpha: 1)
+                minitribeview.layer.borderWidth = 1
+                btnimg3.setImage(UIImage(named: "Icon awesome-check-circle"), for: .normal)
+                arr_selectedVibes.add("Mini Tribes")
+                btn_miniTribes.isSelected = true
+            }
+        }
+        arr_selectedVibes =  NSMutableArray(array: arrTemp)
+        
+        txt_religion.text = DataManager.getVal(userData["religious"]) as? String ?? ""
+        selectedReligion = txt_religion.text ?? ""
+        
+        txt_q1.text = DataManager.getVal(userData["QA_1"]) as? String ?? ""
+        txt_q2.text = DataManager.getVal(userData["QA_2"]) as? String ?? ""
+        txt_q3.text = DataManager.getVal(userData["QA_3"]) as? String ?? ""
+        txt_q4.text = DataManager.getVal(userData["QA_4"]) as? String ?? ""
+
+        
+        
+     
+        if txt_q4.text != "" {
+            txt_q4.textColor = UIColor.black
+        }else{
+            txt_q4.text = "Write your answer here (Optional)"
+            txt_q4.textColor = UIColor.lightGray
+        }
+        if txt_q3.text != "" {
+            txt_q3.textColor = UIColor.black
+        }else{
+            txt_q3.textColor = UIColor.lightGray
+            txt_q3.text = "Write your answer here (Optional)"
+        }
+        if txt_q2.text != "" {
+            txt_q2.textColor = UIColor.black
+        }else{
+            txt_q2.textColor = UIColor.lightGray
+            txt_q2.text = "Write your answer here (Optional)"
+        }
+        if txt_q1.text != "" {
+            txt_q1.textColor = UIColor.black
+        }else{
+            txt_q1.textColor = UIColor.lightGray
+            txt_q1.text = "Write your answer here (Optional)"
+        }
+    }
+   
+    @objc func displayList(){
+        tableview_relegion.isHidden = !tableview_relegion.isHidden
+    }
+    @IBAction func religiousDropDown(_ sender: Any) {
+        tableview_relegion.isHidden = !tableview_relegion.isHidden
+    }
+    
+    @IBAction func btnnext(_ sender: Any) {
+
+        if ValidationClass().ValidateProfileSetup2Form(self){
+            
+            basicFunctions.presentLoader()
+
+            let parameterDictionary = NSMutableDictionary()
+            parameterDictionary.setValue(Config().AppUserDefaults.value(forKey:"user_id") as? String ?? "", forKey: "user_id")
+            parameterDictionary.setValue(Config().api_key, forKey: "api_key")
+            
+            parameterDictionary.setValue(arr_selectedVibes.componentsJoined(by:", "), forKey: "vibe")
+            parameterDictionary.setValue(arr_selectedInterests.componentsJoined(by:", "), forKey: "hobbies")
+            if selectedReligion == "Select" {
+                parameterDictionary.setValue("", forKey: "religious")
+            }else{
+                parameterDictionary.setValue(selectedReligion, forKey: "religious")
+            }
+            parameterDictionary.setValue(txt_q1.textColor == UIColor.black ? txt_q1.text ?? "" : "", forKey: "QA_1")
+            parameterDictionary.setValue(txt_q2.textColor == UIColor.black ? txt_q2.text ?? "" : "", forKey: "QA_2")
+            parameterDictionary.setValue(txt_q3.textColor == UIColor.black ? txt_q3.text ?? "" : "", forKey: "QA_3")
+            parameterDictionary.setValue(txt_q4.textColor == UIColor.black ? txt_q4.text ?? "" : "", forKey: "QA_4")
+            
+            if comesFrom == "Edit"{
+                parameterDictionary.setValue("edit", forKey: "type")
+            }else{
+                parameterDictionary.setValue("add", forKey: "type")
+            }
+           
+            print(parameterDictionary)
+
+            let methodName = "update_form_two"
+
+            DataManager.getAPIResponse(parameterDictionary , methodName: methodName, methodType: "POST"){(responseData,error)-> Void in
+                let status  = DataManager.getVal(responseData?["status"]) as! String
+                let message  = DataManager.getVal(responseData?["message"]) as! String
+
+                if status == "1" {
+                    self.view.makeToast(message)
+
+                    let data = DataManager.getVal(responseData?["data"]) as? [String:Any] ?? [:]
+                    USER_VIBE = DataManager.getVal(data["vibe"]) as? String ?? ""
+                    Config().AppUserDefaults.setValue(USER_VIBE, forKey: "userVibe")
+                    print(USER_VIBE)
+                    let str = DataManager.getVal(data["vibe"]) as? String ?? ""
+                    let arr = str.components(separatedBy: ", ")
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now()+0.8, execute: {
+                        
+                        if arr.contains("Soul Love") || arr.contains("Tribe"){
+                            let vc = self.storyboard?.instantiateViewController(identifier: "SetProfilestep3VC") as! SetProfilestep3VC
+                            vc.vibe = str
+                            vc.comesFrom = self.comesFrom
+                            vc.userData = self.userData
+                            self.navigationController?.pushViewController(vc, animated: true)
+                            SELECT_VIBE = "Soul Love"
+                        }else{
+//                            let vc = self.storyboard?.instantiateViewController(identifier: "SetProfilefinalVC") as! SetProfilefinalVC
+//                            vc.vibe = str
+//                            vc.comesFrom = self.comesFrom
+//                            vc.userData = self.userData
+//                            self.navigationController?.pushViewController(vc, animated: true)
+                            
+                            
+                            if forIntentionHide == true {
+                                if USER_VIBE.contains("Mini Tribes") {
+                                    let ra = "Mini Tribes"
+                                    let newVibe = USER_VIBE.replacingOccurrences(of: ra, with: "Mini")
+
+                                    if newVibe.contains("Mini") &&  !newVibe.contains("Soul Love") && !newVibe.contains("Tribe"){
+                //                        if let tabBarController = self.tabBarController {
+                //                            let indexToRemove = 2
+                //                            if indexToRemove < tabBarController.viewControllers!.count {
+                //                                var viewControllers = tabBarController.viewControllers
+                //                                viewControllers?.remove(at: indexToRemove)
+                //                                tabBarController.viewControllers = viewControllers
+                //                            }
+                //                        }
+                                        
+                                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                            let navigate = storyboard.instantiateViewController(withIdentifier: "SecondTabBarVC") as! SecondTabBarVC
+                                            navigate.selectedIndex = 2
+                                            let leftController = storyboard.instantiateViewController(withIdentifier: "LeftMenuViewController") as! LeftMenuViewController
+                                            let slideMenuController = SlideMenuController(mainViewController: UINavigationController(rootViewController:navigate), leftMenuViewController: leftController)
+                                            slideMenuController.delegate = leftController as? SlideMenuControllerDelegate
+                                            UIApplication.shared.windows.first?.rootViewController = slideMenuController
+                                            UIApplication.shared.windows.first?.makeKeyAndVisible()
+                                        self.tabBarController?.tabBar.isUserInteractionEnabled = true
+                                        SELECT_VIBE = ""
+                                    }else{
+                                        //5
+                                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                        let navigate = storyboard.instantiateViewController(withIdentifier: "TTabBarViewController") as! TTabBarViewController
+                                        let leftController = storyboard.instantiateViewController(withIdentifier: "LeftMenuViewController") as! LeftMenuViewController
+                                        let slideMenuController = SlideMenuController(mainViewController: UINavigationController(rootViewController:navigate), leftMenuViewController: leftController)
+                                        slideMenuController.delegate = leftController as? SlideMenuControllerDelegate
+                                        UIApplication.shared.windows.first?.rootViewController = slideMenuController
+                                        UIApplication.shared.windows.first?.makeKeyAndVisible()
+                                        self.tabBarController?.tabBar.isUserInteractionEnabled = true
+                                    }
+                                }else{
+                                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                    let navigate = storyboard.instantiateViewController(withIdentifier: "thirdTabBarVC") as! thirdTabBarVC
+                                    let leftController = storyboard.instantiateViewController(withIdentifier: "LeftMenuViewController") as! LeftMenuViewController
+                                    let slideMenuController = SlideMenuController(mainViewController: UINavigationController(rootViewController:navigate), leftMenuViewController: leftController)
+                                    slideMenuController.delegate = leftController as? SlideMenuControllerDelegate
+                                    UIApplication.shared.windows.first?.rootViewController = slideMenuController
+                                    UIApplication.shared.windows.first?.makeKeyAndVisible()
+                                    if !USER_VIBE.contains("Mini") &&  USER_VIBE.contains("Soul Love") && !USER_VIBE.contains("Tribe") {
+                                        SELECT_VIBE = "Soul Love"
+                                    }
+                                    if !USER_VIBE.contains("Mini") &&  !USER_VIBE.contains("Soul Love") && USER_VIBE.contains("Tribe") {
+                                        SELECT_VIBE = "Tribe"
+                                    }
+                                }
+                            }else{
+                                let vc = self.storyboard?.instantiateViewController(withIdentifier: "overAllIntentions") as! overAllIntentions
+                                vc.comesFromSignUp = "yes"
+                                self.navigationController?.pushViewController(vc, animated: true)
+                            }
+                            
+                            
+                            
+                            
+                        }
+                    })
+                }
+                else {
+                    self.view.makeToast(message, duration: 2.0, position: .bottom, title: nil, image: nil, style: ToastManager.shared.style, completion: nil)
+                }
+//                self.removeSpinner()
+                basicFunctions.stopLoading()
+            }
+        }
+    }
+    @IBAction func btnBack(_ sender: Any) {
+        
+        navigationController?.popViewController(animated: true)
+
+    }
+
+    @IBAction func btnsoullove(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        if sender.isSelected{
+            soulview.layer.borderColor = #colorLiteral(red: 0.0862745098, green: 0.7803921569, blue: 0.6039215686, alpha: 1)
+            soulview.layer.borderWidth = 1
+            btnimg.setImage(UIImage(named: "Icon awesome-check-circle"), for: .normal)
+            arr_selectedVibes.add("Soul Love")
+        }
+        else{
+            soulview.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+            soulview.layer.borderWidth = 1
+            btnimg.setImage(UIImage(named: "black circle"), for: .normal)
+            arr_selectedVibes.remove("Soul Love")
+        }
+    }
+    @IBAction func btntribe(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        if sender.isSelected{
+            tribeview.layer.borderColor = #colorLiteral(red: 0.0862745098, green: 0.7803921569, blue: 0.6039215686, alpha: 1)
+            tribeview.layer.borderWidth = 1
+            btnimg2.setImage(UIImage(named: "Icon awesome-check-circle"), for: .normal)
+            arr_selectedVibes.add("Tribe")
+        }
+        
+        else{
+            tribeview.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+            tribeview.layer.borderWidth = 1
+            btnimg2.setImage(UIImage(named: "black circle"), for: .normal)
+            arr_selectedVibes.remove("Tribe")
+        }
+    }
+    @IBAction func btnminitribe(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        if sender.isSelected{
+            minitribeview.layer.borderColor = #colorLiteral(red: 0.0862745098, green: 0.7803921569, blue: 0.6039215686, alpha: 1)
+            minitribeview.layer.borderWidth = 1
+            btnimg3.setImage(UIImage(named: "Icon awesome-check-circle"), for: .normal)
+            arr_selectedVibes.add("Mini Tribes")
+        }
+        else{
+            minitribeview.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+            minitribeview.layer.borderWidth = 1
+            btnimg3.setImage(UIImage(named: "black circle"), for: .normal)
+            arr_selectedVibes.remove("Mini Tribes")
+        }
+    }
+    
+}
+extension SetProfilestep2VC: UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return interestImage.count
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SetProfilestep2cell", for: indexPath) as! SetProfilestep2cell
+        
+        if arr_selectedInterests.contains(interestTxt[indexPath.row])
+            {
+            cell.backgroundColor = #colorLiteral(red: 0.0862745098, green: 0.7803921569, blue: 0.6039215686, alpha: 0.3977995614)
+            cell.layer.borderWidth = 1
+            cell.layer.borderColor = #colorLiteral(red: 0.0862745098, green: 0.7803921569, blue: 0.6039215686, alpha: 1)
+            cell.layer.cornerRadius = 8
+            }
+            else 
+            {
+                cell.backgroundColor = UIColor.white
+//              cell.layer.borderWidth = 0.8
+                cell.layer.borderColor = #colorLiteral(red: 0.8941176471, green: 0.9019607843, blue: 0.9176470588, alpha: 1)
+            }
+
+        cell.imginterest.image = UIImage(named: interestImage[indexPath.item])
+        cell.lblname.text = interestTxt[indexPath.item]
+        cell.intrestview.layer.cornerRadius = 6
+        cell.intrestview.layer.borderWidth = 0.6
+        cell.intrestview.layer.borderColor = #colorLiteral(red: 0.8941176471, green: 0.9019607843, blue: 0.9176470588, alpha: 1)
+        return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
+    {
+        if arr_selectedInterests.contains(interestTxt[indexPath.row]){
+            arr_selectedInterests.remove(interestTxt[indexPath.row])
+
+        }
+        else{
+            if arr_selectedInterests.count <= 5{
+                arr_selectedInterests.add(interestTxt[indexPath.row])
+            }else{
+                self.view.makeToast("Maximum number of interests selected.")
+            }
+        }
+        
+        selectedIndex = indexPath.row
+
+        self.interestcollection.reloadData()
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 15
+        
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        return CGSize(width: collectionView.frame.width/2.1 , height: 40);
+        
+    }
+   
+}
+
+extension SetProfilestep2VC : UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return arr_religions.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! DistanceFormatTableViewCell
+        cell.lbl_title.text = arr_religions[indexPath.row]
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.selectedReligion = arr_religions[indexPath.row]
+        if selectedReligion == "" {
+            self.crossbtn.isHidden = true
+        }else{
+            self.txt_religion.text = self.selectedReligion
+            self.crossbtn.isHidden = false
+        }
+        
+        
+        tableView.isHidden = true
+    }
+    
+}
+
+
+
+extension SetProfilestep2VC : UITextViewDelegate {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        
+        if textView.textColor == UIColor.lightGray {
+            textView.text = ""
+            textView.textColor = UIColor.black
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        
+        if textView.text == "" {
+            textView.text = "Write your answer here (Optional)"
+            textView.textColor = UIColor.lightGray
+        }
+    }
+}
